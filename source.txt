@@ -1,0 +1,23 @@
+Here's a joke
+What chocolate do I like most?
+oreo
+27
+caramel
+20
+walnuts
+14
+milk
+10
+nutella
+7
+What book series do I like most?
+Discworld
+27
+caramel
+20
+c
+14
+d
+10
+e
+7
