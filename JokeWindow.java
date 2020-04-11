@@ -5,6 +5,7 @@ class JokeWindow {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
         JLabel label = new JLabel("   " +s);
         panel.add(label);
         JButton laughter = new JButton("I laughed");

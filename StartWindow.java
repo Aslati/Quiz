@@ -3,9 +3,9 @@ import java.awt.*;
 
 class StartWindow extends JPanel {
     static JFrame frame = new JFrame();
-
+    static JButton start;
     static void view(){
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         ImagePanel panel = new ImagePanel("src/qbkls.png");
         panel.setSize(400, 400);
@@ -17,8 +17,11 @@ class StartWindow extends JPanel {
         label.setLayout(new BorderLayout());
 
 
-        JButton start = new JButton("Start");
-        start.addActionListener(e -> Controller.startGame());
+        start = new JButton("Start");
+        start.addActionListener(e -> {
+            start.setText("done");
+            Controller.startGame();
+        });
         start.setPreferredSize(new Dimension(200,20));
         start.setMinimumSize(start.getPreferredSize());
 

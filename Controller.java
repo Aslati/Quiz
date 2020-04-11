@@ -1,31 +1,41 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 class Controller {
-    static void showJoke(){
-            JokeWindow.view(Module.createQuiz());
-    }
+    /*static void showJoke(){
+            JokeWindow.view(Model.createQuiz());
+    }*/
     static void startGame(){
-        Module.createQuiz();
+        Model.createQuiz();
+        StartWindow.start.setText("again");
         QuizWindow.view();
     }
+    static int i = 0;
     private static ArrayList list;
     private static int numberOfCorrectAnswers = 0;
     private static int numberOfIncorrectAnswers = 0;
     private static ArrayList  listOfPoints = new ArrayList();
-
+    static boolean isLabel;
     private static int points = 0;
 
     private static void preparePointsList(){
-        if(Module.list.get(1) instanceof ArrayList){
-            listOfPoints =(ArrayList) Module.list.get(1);
+        if(Model.list.get(1) instanceof ArrayList){
+            listOfPoints =(ArrayList) Model.list.get(1);
         }
 
     }
     static  void check(String a){
+        isLabel =  QuizWindow.list.get(list.indexOf(a)).get(0) instanceof JLabel;
         if(list.contains(a)){
             preparePointsList();
             SimpleAudioPlayer.SimpleAudioPlayer("src/correct_sound.wav");
-            if(list.indexOf(a)==0){
+            if(isLabel){
+
+                ((JLabel) QuizWindow.list.get(list.indexOf(a)).get(0)).setText(a);
+               // QuizWindow.center.setVisible(false);
+                //QuizWindow.center.setVisible(true);
+            }
+            /*if(list.indexOf(a)==0){
                 QuizWindow.answerOne.setText(a);
                 QuizWindow.pointsOne.setText(listOfPoints.get(0).toString());
             }
@@ -44,7 +54,7 @@ class Controller {
             if(list.indexOf(a)==4){
                 QuizWindow.answerFive.setText(a);
                 QuizWindow.pointsFive.setText(listOfPoints.get(4).toString());
-            }
+            }*/
             numberOfCorrectAnswers++;
             points+=Integer.parseInt(listOfPoints.get(list.indexOf(a)).toString());
         }else{
@@ -67,23 +77,23 @@ class Controller {
     }
 
     private static void isDone(){
-        if(!QuizWindow.answerOne.getText().equals("")&&!QuizWindow.answerTwo.getText().equals("")&&!QuizWindow.answerThree.getText().equals("")&&!QuizWindow.answerFour.getText().equals("")&&!QuizWindow.answerFive.getText().equals("")){
-            QuizWindow.answerOne.setText("");
-            QuizWindow.answerTwo.setText("");
-            QuizWindow.answerThree.setText("");
-            QuizWindow.answerFour.setText("");
-            QuizWindow.answerFive.setText("");
-            QuizWindow.pointsOne.setText("");
-            QuizWindow.pointsTwo.setText("");
-            QuizWindow.pointsThree.setText("");
-            QuizWindow.pointsFour.setText("");
-            QuizWindow.pointsFive.setText("");
-
-            QuizWindow.pointsNumber.setText("Points number: " + points + "      ");
-
-            Controller.prepareAQuiz(QuizWindow.showATask());
-
+        for(i = 0; i<5; i++){
+            isLabel =  QuizWindow.list.get(i).get(0) instanceof JLabel;
+             if(!QuizWindow.list.get(i).get(0).equals("")/*!QuizWindow.answerOne.getText().equals("")&&!QuizWindow.answerTwo.getText().equals("")&&!QuizWindow.answerThree.getText().equals("")&&!QuizWindow.answerFour.getText().equals("")&&!QuizWindow.answerFive.getText().equals("")*/) {
+                 /*QuizWindow.answerOne.setText("");
+                 QuizWindow.answerTwo.setText("");
+                 QuizWindow.answerThree.setText("");
+                 QuizWindow.answerFour.setText("");
+                 QuizWindow.answerFive.setText("");
+                 QuizWindow.pointsOne.setText("");
+                 QuizWindow.pointsTwo.setText("");
+                 QuizWindow.pointsThree.setText("");
+                 QuizWindow.pointsFour.setText("");
+                 QuizWindow.pointsFive.setText("");*/
+                 ((JLabel) QuizWindow.list.get(i).get(0)).setText("");
+             }
         }
+        QuizWindow.showATask();
     }
     private static void lost(){
         QuizWindow.frame.setVisible(false);
