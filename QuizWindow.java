@@ -4,16 +4,20 @@ import java.util.ArrayList;
 
 class QuizWindow {
     private static JLabel showQuestion = new JLabel();
-    static JTextField answerOne = new JTextField();
-    static JTextField answerTwo = new JTextField();
-    static JTextField answerThree = new JTextField();
-    static JTextField answerFour = new JTextField();
-    static JTextField answerFive = new JTextField();
-    static JTextField pointsOne = new JTextField();
-    static JTextField pointsTwo = new JTextField();
-    static JTextField pointsThree = new JTextField();
-    static JTextField pointsFour = new JTextField();
-    static JTextField pointsFive = new JTextField();
+    /*static AnswerLabel answerOne = new AnswerLabel();
+    static JLabel answerTwo = new JLabel();
+    static JLabel answerThree = new JLabel();
+    static JLabel answerFour = new JLabel();
+    static JLabel answerFive = new JLabel();
+    static JLabel pointsOne = new JLabel();
+    static JLabel pointsTwo = new JLabel();
+    static JLabel pointsThree = new JLabel();
+    static JLabel pointsFour = new JLabel();
+    static JLabel pointsFive = new JLabel();*/
+    static ArrayList<ArrayList> list = new ArrayList();
+
+
+    static JPanel center = new JPanel();
 
     private static JPanel west = new JPanel();
     static JLabel pointsNumber = new JLabel();
@@ -22,12 +26,12 @@ class QuizWindow {
     static JFrame frame = new JFrame();
 
     static void view(){
-        StartWindow.frame.setVisible(false);
+
         JPanel panel= new JPanel();
 
         panel.setLayout(new GridLayout(4,2));
 
-        JPanel center = new JPanel();
+
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
 
         JPanel south = new JPanel();
@@ -36,6 +40,11 @@ class QuizWindow {
         JPanel north = new JPanel();
         north.setLayout((new BoxLayout(north, BoxLayout.X_AXIS)));
 
+        north.setPreferredSize(new Dimension(600, 75));
+        north.setMaximumSize(north.getPreferredSize());
+
+        showQuestion.setPreferredSize(new Dimension(400, 75));
+        showQuestion.setMaximumSize(showQuestion.getPreferredSize());
 
         north.add(showQuestion);
         north.add(pointsNumber);
@@ -61,29 +70,36 @@ class QuizWindow {
 
         showQuestion.setPreferredSize(new Dimension(500, 100));
 
-        answerOne.setEditable(false);
-        answerOne.setPreferredSize(new Dimension(400, 25));
-        answerOne.setMaximumSize(answerOne.getPreferredSize());
-        answerTwo.setEditable(false);
+        for(int i = 0; i<5; i++){
+            PointsAndAnswerContainer pointsAndAnswerContainer = new PointsAndAnswerContainer();
+            center.add(pointsAndAnswerContainer);
+            System.out.println("okay");
+            list.add(i, pointsAndAnswerContainer.array);
+        }
+
+       /* //answerOne.setEditable(false);
+        //answerOne.setPreferredSize(new Dimension(400, 25));
+       // answerOne.setMaximumSize(answerOne.getPreferredSize());
+        //answerTwo.setEditable(false);
         answerTwo.setPreferredSize(new Dimension(400, 25));
         answerTwo.setMaximumSize(answerTwo.getPreferredSize());
-        answerThree.setEditable(false);
+        //answerThree.setEditable(false);
         answerThree.setPreferredSize(new Dimension(400, 25));
         answerThree.setMaximumSize(answerThree.getPreferredSize());
-        answerFive.setEditable(false);
+        //answerFive.setEditable(false);
         answerFour.setPreferredSize(new Dimension(400, 25));
         answerFour.setMaximumSize(answerFour.getPreferredSize());
-        answerFour.setEditable(false);
+        //answerFour.setEditable(false);
         answerFive.setPreferredSize(new Dimension(400, 25));
-        answerFive.setMaximumSize(answerFive.getPreferredSize());
+        answerFive.setMaximumSize(answerFive.getPreferredSize());*/
 
-        pointsOne.setEditable(false);
+        /*pointsOne.setEditable(false);
         pointsTwo.setEditable(false);
         pointsThree.setEditable(false);
         pointsFive.setEditable(false);
-        pointsFour.setEditable(false);
+        pointsFour.setEditable(false);*/
 
-        JPanel containerOne = new JPanel();
+        /*JPanel containerOne = new JPanel();
         containerOne.setLayout((new BoxLayout(containerOne, BoxLayout.X_AXIS)));
         containerOne.add(answerOne);
         containerOne.add(pointsOne);
@@ -112,7 +128,7 @@ class QuizWindow {
         center.add(containerTwo);
         center.add(containerThree);
         center.add(containerFour);
-        center.add(containerFive);
+        center.add(containerFive);*/
 
         frame.add(panel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -120,28 +136,28 @@ class QuizWindow {
         frame.setResizable(false);
         Controller.prepareAQuiz(showATask());
         panel.add(north);
+        center.setVisible(true);
         panel.add(center);
-
         panel.add(south);
         panel.add(west);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        StartWindow.frame.setVisible(false);
     }
 
     static ArrayList showATask(){
-        ArrayList<ArrayList> list = Module.getAQuestion();
+        ArrayList<ArrayList> list = Model.getAQuestion();
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(list.get(2));
         String list2 = stringBuffer.toString();
-        showQuestion.setText("   " + list2);
+        showQuestion.setText("    " +  list2);
         return list.get(0);
     }
 
     static void remove(){
 
-      ImagePanel wrongOne = new ImagePanel("src/wrong.png");
-
-        west.add(wrongOne);
+      ImagePanel wrong = new ImagePanel("src/wrong.png");
+        west.add(wrong);
         west.setVisible(false);
         west.setVisible(true);
     }
