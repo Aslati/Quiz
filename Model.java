@@ -1,58 +1,80 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import javax.swing.*;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 class Model {
-    public static void main (String[] args){
-        StartWindow.view();
-    }
-
-    private static Scanner scanner;
+   private static BufferedReader bufferedReader;
 
   static  ArrayList list = new ArrayList();
 
     static String createQuiz(){
-        StartWindow.start.setText("first attempt");
-       // File file =
-        try {
 
-            scanner = new Scanner(new File("src/source.txt"));
-            StartWindow.start.setText("second attempt");
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
+        SourceFile sourceFile = new SourceFile();
+
+        bufferedReader = sourceFile.getFile("source.txt");
+
+        try {
+             return bufferedReader.readLine();
+        }catch (IOException e){
+            return "Sorry, there's a technical problem";
         }
-        return scanner.nextLine();
     }
-    static ArrayList<ArrayList> getAQuestion() {
+    static ArrayList<ArrayList> getAQuestion(){
         ArrayList listOfAnswers = new ArrayList();
         ArrayList<Integer> listOfPoints = new ArrayList<>();
         String question = "";
-        if (scanner.hasNext()) {
-            //scanner.nextLine();
-            question = scanner.nextLine();
+
+        try{
+            String readLine = bufferedReader.readLine();
+            if (readLine!=null) {
+            question = readLine;
             int na = 0;
             int np = 0;
             for (int i = 0; i < 10; i++) {
                 if (i % 2 == 0) {
-                    listOfAnswers.add(na, scanner.nextLine());
+                    listOfAnswers.add(na, bufferedReader.readLine());
                     na++;
                 }
                 if (i % 2 == 1) {
-                    listOfPoints.add(np, Integer.parseInt(scanner.nextLine()));
+                    listOfPoints.add(np, Integer.parseInt(bufferedReader.readLine()));
                     np++;
                 }
             }
-
-
-        }else{
-            System.out.println();
-            Controller.endGame();
+       }else{
+           Controller.endGame();
+           bufferedReader.close();
         }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
         list.add(0, listOfAnswers);
         list.add(1, listOfPoints);
         list.add(2, question);
         return list;
     }
+    static void fileOverwritten(ArrayList<ArrayList> list){
+               try {
+                   FileWriter fileWriter = new FileWriter("C://Users//joaja//Documents//Quiz//src//source.txt");
 
-}
+                   BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
+
+                   bufferWriter.write(((JTextField) list.get(0).get(0)).getText());
+                   bufferWriter.newLine();
+                   for(int i = 1; i<list.size(); i++){
+                       for(int j = 0; j<11; j++){
+                           bufferWriter.write( ((JTextField) list.get(i).get(j)).getText());
+                           bufferWriter.newLine();
+                       }
+                   }
+                   bufferWriter.close();
+               }catch (IOException e){
+                   e.printStackTrace();
+               }
+           }
+
+    }
+
+
+

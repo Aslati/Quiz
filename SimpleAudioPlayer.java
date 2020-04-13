@@ -1,5 +1,5 @@
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -12,22 +12,20 @@ class SimpleAudioPlayer
 
     static AudioInputStream audioInputStream;
 
-    static void SimpleAudioPlayer(String filePath) {
+    void SimpleAudioPlayer(String filePath) {
+        URL url =getClass().getResource(filePath);
         try {
             audioInputStream =
-                    AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+                    AudioSystem.getAudioInputStream(url);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
 
-        }catch(UnsupportedAudioFileException e){
-
-        }catch(IOException e){
-
-        }catch(LineUnavailableException e){
-
+        }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
         }
 
     }
+    }
 
-}
+

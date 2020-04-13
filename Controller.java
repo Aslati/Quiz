@@ -2,20 +2,15 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 class Controller {
-    /*static void showJoke(){
-            JokeWindow.view(Model.createQuiz());
-    }*/
     static void startGame(){
-        Model.createQuiz();
-        StartWindow.start.setText("again");
         QuizWindow.view();
     }
-    static int i = 0;
     private static ArrayList list;
     private static int numberOfCorrectAnswers = 0;
     private static int numberOfIncorrectAnswers = 0;
     private static ArrayList  listOfPoints = new ArrayList();
-    static boolean isLabel;
+    private static ArrayList listOfUsed = new ArrayList();
+    static private boolean isLabel;
     private static int points = 0;
 
     private static void preparePointsList(){
@@ -24,43 +19,33 @@ class Controller {
         }
 
     }
+    private static SimpleAudioPlayer simpleAudioPlayer = new SimpleAudioPlayer();
     static  void check(String a){
-        isLabel =  QuizWindow.list.get(list.indexOf(a)).get(0) instanceof JLabel;
         if(list.contains(a)){
-            preparePointsList();
-            SimpleAudioPlayer.SimpleAudioPlayer("src/correct_sound.wav");
-            if(isLabel){
 
+            isLabel =  QuizWindow.list.get(list.indexOf(a)).get(0) instanceof JLabel;
+            boolean isLabelPoints = QuizWindow.list.get(list.indexOf(a)).get(1) instanceof JLabel;
+            preparePointsList();
+
+            if(isLabel && isLabelPoints && listOfUsed.contains(a)==false){
+                listOfUsed.add(a);
                 ((JLabel) QuizWindow.list.get(list.indexOf(a)).get(0)).setText(a);
-               // QuizWindow.center.setVisible(false);
-                //QuizWindow.center.setVisible(true);
+                ((JLabel) QuizWindow.list.get(list.indexOf(a)).get(1)).setText(listOfPoints.get(list.indexOf(a)).toString());
+                numberOfCorrectAnswers++;
+                points+=Integer.parseInt(listOfPoints.get(list.indexOf(a)).toString());
+                simpleAudioPlayer.SimpleAudioPlayer("correct_sound.wav");
+            }else if(listOfUsed.contains(a)){
+                numberOfIncorrectAnswers++;
+                if(numberOfIncorrectAnswers>=1){
+                    simpleAudioPlayer.SimpleAudioPlayer("wrong_sound.wav");
+                    QuizWindow.remove();
+                }
             }
-            /*if(list.indexOf(a)==0){
-                QuizWindow.answerOne.setText(a);
-                QuizWindow.pointsOne.setText(listOfPoints.get(0).toString());
-            }
-            if(list.indexOf(a)==1){
-                QuizWindow.answerTwo.setText(a);
-                QuizWindow.pointsTwo.setText(listOfPoints.get(1).toString());
-            }
-            if(list.indexOf(a)==2){
-                QuizWindow.answerThree.setText(a);
-                QuizWindow.pointsThree.setText(listOfPoints.get(2).toString());
-            }
-            if(list.indexOf(a)==3){
-                QuizWindow.answerFour.setText(a);
-                QuizWindow.pointsFour.setText(listOfPoints.get(3).toString());
-            }
-            if(list.indexOf(a)==4){
-                QuizWindow.answerFive.setText(a);
-                QuizWindow.pointsFive.setText(listOfPoints.get(4).toString());
-            }*/
-            numberOfCorrectAnswers++;
-            points+=Integer.parseInt(listOfPoints.get(list.indexOf(a)).toString());
+
         }else{
             numberOfIncorrectAnswers++;
             if(numberOfIncorrectAnswers>=1){
-                SimpleAudioPlayer.SimpleAudioPlayer("src/wrong_sound.wav");
+                simpleAudioPlayer.SimpleAudioPlayer("wrong_sound.wav");
                 QuizWindow.remove();
             }
         }
@@ -73,35 +58,30 @@ class Controller {
         }
     }
     static void prepareAQuiz(ArrayList gottenList){
+        listOfUsed.clear();
         list=gottenList;
     }
 
     private static void isDone(){
-        for(i = 0; i<5; i++){
+        int i = 0;
+        while(i<5){
             isLabel =  QuizWindow.list.get(i).get(0) instanceof JLabel;
-             if(!QuizWindow.list.get(i).get(0).equals("")/*!QuizWindow.answerOne.getText().equals("")&&!QuizWindow.answerTwo.getText().equals("")&&!QuizWindow.answerThree.getText().equals("")&&!QuizWindow.answerFour.getText().equals("")&&!QuizWindow.answerFive.getText().equals("")*/) {
-                 /*QuizWindow.answerOne.setText("");
-                 QuizWindow.answerTwo.setText("");
-                 QuizWindow.answerThree.setText("");
-                 QuizWindow.answerFour.setText("");
-                 QuizWindow.answerFive.setText("");
-                 QuizWindow.pointsOne.setText("");
-                 QuizWindow.pointsTwo.setText("");
-                 QuizWindow.pointsThree.setText("");
-                 QuizWindow.pointsFour.setText("");
-                 QuizWindow.pointsFive.setText("");*/
+             if(!QuizWindow.list.get(i).get(0).equals("")) {
                  ((JLabel) QuizWindow.list.get(i).get(0)).setText("");
+                 ((JLabel) QuizWindow.list.get(i).get(1)).setText("");
+                 i++;
              }
         }
-        QuizWindow.showATask();
+        QuizWindow.pointsNumber.setText(" Points number: " + points);
+        prepareAQuiz(QuizWindow.showATask());
     }
     private static void lost(){
         QuizWindow.frame.setVisible(false);
-        LossWindow.view();
+        SimpleTextWindow simpleTextWindow = new SimpleTextWindow("You lose", true, false);
+        simpleTextWindow.setVisible(true);
     }
     static void endGame(){
-        GameEndWindow.view(points);
-        QuizWindow.frame.setVisible(false);
+        SimpleTextWindow simpleTextWindow = new SimpleTextWindow("Your score: " +points, true, false);
     }
 
 }

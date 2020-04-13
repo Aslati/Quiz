@@ -1,23 +1,23 @@
 Here's a joke
-What chocolate do I like most?
-oreo
-27
-caramel
+First question
+First answer
+50
+Second answer
+40
+Third answer
+30
+Fourth answer
 20
-walnuts
-14
-milk
+Fifth answer
 10
-nutella
-7
-What book series do I like most?
-Discworld
-27
-caramel
+Second question
+First answer
+50
+Second answer
+40
+Third answer
+30
+Fourth answer
 20
-c
-14
-d
+Fifth answer
 10
-e
-7
